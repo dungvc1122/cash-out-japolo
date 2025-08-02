@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CrashingOut</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .form-section {
+      display: flex;
+      flex-direction: row;
+      gap: 40px;
+      align-items: flex-start;
+    }
+
+    .form-box {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 20px;
+      width: 100%;
+    }
+
+    .form-box h2 {
+      margin-top: 0;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tips-section {
+      display: flex;
+      flex-direction: row;
+      gap: 40px;
+    }
+
+    .staff-group {
+      flex: 1;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      font-size: 14px;
+    }
+
+    input {
+      padding: 5px;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sales / Credit / Till -->
+  <div class="form-box">
+    <h2>Cash Out Form</h2>
+    <div class="form-section">
+      <div class="form-group" style="flex: 1;">
+        <label>Sales<input type="number" id="sales" /></label>
+        <label>Credit<input type="number" id="credit" /></label>
+        <label>Yesterday's Till<input type="number" id="yesterdayTill" /></label>
+        <label>Till (Auto-calculated)<input type="number" id="till" readonly /></label>
+      </div>
+      <div class="form-group" style="flex: 1;">
+        <label>Uber Eats Total<input type="number" id="uber" /></label>
+        <label>Doordash Total<input type="number" id="doordash" /></label>
+        <label>Skip Total<input type="number" id="skip" /></label>
+        <label>FanTuan Total<input type="number" id="fantuan" /></label>
+        <label>Total Sales (Auto-calculated)<input type="number" id="totalSales" readonly /></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tips Calculator Section -->
+  <div class="form-box">
+    <h2>Tips Calculator</h2>
+
+    <label>Cash Today<input type="number" id="cashToday" /></label>
+
+    <div class="tips-section">
+      <div class="staff-group">
+        <h4>Front Staff</h4>
+        <label>Name<input type="text" id="frontName1" /></label>
+        <label>Hours<input type="number" id="frontHours1" /></label>
+
+        <label>Name<input type="text" id="frontName2" /></label>
+        <label>Hours<input type="number" id="frontHours2" /></label>
+      </div>
+
+      <div class="staff-group">
+        <h4>Back Staff</h4>
+        <label>Name<input type="text" id="backName1" /></label>
+        <label>Hours<input type="number" id="backHours1" /></label>
+
+        <label>Name<input type="text" id="backName2" /></label>
+        <label>Hours<input type="number" id="backHours2" /></label>
+
+        <label>Name<input type="text" id="backName3" /></label>
+        <label>Hours<input type="number" id="backHours3" /></label>
+      </div>
+    </div>
+
+    <button onclick="calculateTips()">Calculate Tips</button>
+    <div id="tipsResult" style="margin-top: 20px;"></div>
+  </div>
+
+  <script>
+    function calculateTips() {
+      const sales = Number(document.getElementById("sales").value) || 0;
+      const credit = Number(document.getElementById("credit").value) || 0;
+      const yesterdayTill = Number(document.getElementById("yesterdayTill").value) || 0;
+      const till = sales - credit + yesterdayTill;
+      document.getElementById("till").value = till;
+
+      const uber = Number(document.getElementById("uber").value) || 0;
+      const doordash = Number(document.getElementById("doordash").value) || 0;
+      const skip = Number(document.getElementById("skip").value) || 0;
+      const fantuan = Number(document.getElementById("fantuan").value) || 0;
+      const totalSales = sales + uber + doordash + skip + fantuan;
+      document.getElementById("totalSales").value = totalSales;
+
+      const cashToday = Number(document.getElementById("cashToday").value) || 0;
+      const totalTips = cashToday - till;
+
+      const hours = [
+        { name: document.getElementById("frontName1").value, hours: Number(document.getElementById("frontHours1").value) || 0 },
+        { name: document.getElementById("frontName2").value, hours: Number(document.getElementById("frontHours2").value) || 0 },
+        { name: document.getElementById("backName1").value, hours: Number(document.getElementById("backHours1").value) || 0 },
+        { name: document.getElementById("backName2").value, hours: Number(document.getElementById("backHours2").value) || 0 },
+        { name: document.getElementById("backName3").value, hours: Number(document.getElementById("backHours3").value) || 0 }
+      ];
+
+      const totalHours = hours.reduce((sum, emp) => sum + emp.hours, 0);
+      const tipPerHour = totalTips / totalHours;
+
+      let resultHTML = `<h4>Total Tips: $${totalTips.toFixed(2)}</h4><h4>Tip per Hour: $${tipPerHour.toFixed(2)}</h4><ul>`;
+      hours.forEach(emp => {
+        if (emp.name && emp.hours > 0) {
+          resultHTML += `<li>${emp.name}: $${(tipPerHour * emp.hours).toFixed(2)} (${emp.hours} hrs)</li>`;
+        }
+      });
+      resultHTML += "</ul>";
+
+      document.getElementById("tipsResult").innerHTML = resultHTML;
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #111;
+  color: white;
+  padding: 20px;
+  margin: 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.title, .title2, .title3 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #00ffcc;
+}
+
+/* Sections */
+.form-section {
+  background-color: #222;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px #333;
+}
+
+.section-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+
+input[type="number"],
+input[type="text"] {
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: none;
+  background-color: #333;
+  color: white;
+}
+
+/* Tips Calculator */
+.tips-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.staff-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.staff-group h4 {
+  margin-bottom: 10px;
+  color: #0ff;
+}
+
+/* Outputs (calculated values) */
+.output-box {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #333;
+  border-radius: 5px;
+  color: #0f0;
+  font-weight: bold;
+}
